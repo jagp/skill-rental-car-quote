@@ -17,6 +17,9 @@ desktop.ini
 .env.local
 .env.*.local
 
+# Claude Code local settings (machine-specific)
+.claude/settings.local.json
+
 # Dependencies / build output
 node_modules/
 dist/
