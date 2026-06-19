@@ -26,7 +26,7 @@ Start new work with `git flow feature start <name>` and finish with
 Linting is managed by [Trunk](https://docs.trunk.io/cli) (`.trunk/trunk.yaml`), with
 markdownlint, prettier, git-diff-check, and trufflehog enabled. Run checks with:
 
-```
+```bash
 trunk check
 trunk fmt
 ```
