@@ -24,3 +24,6 @@ desktop.ini
 node_modules/
 dist/
 build/
+
+# Sweep run output (data, not code)
+data/sweeps/
