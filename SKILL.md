@@ -1,84 +1,71 @@
---- 
+---
 name: skill-rental-car-quote
-description: Sweeps rental car prices across companies for one or more target pickup dates and records the observations for price-trend tracking. Use when asked to check, track, or log rental car quotes/prices.
+description: Sweeps lowest-tier, full-week rental car prices across national US brands and nearby branches for one or more target pickup dates, then records every observation as a single sweep file for price-trend tracking. Use when asked to check, track, or log rental car quotes/prices.
 ---
 
 # Rental Car Quote Sweep
 
-Searches for rental car prices across companies/branches for one or more
-target pickup dates, then records every observation from the run as a
-single sweep file.
+The atomic data-collection step of the Rental Radar pipeline: harvest the cheapest
+weekly quote from each national US rental brand at each nearby branch, for one or
+more target pickup dates, and log the run as one immutable sweep file.
 
-## Recording results
+A deterministic planner decides **what to search**; you drive the browser to
+**collect** it. Keep navigation detail in the reference files below — load them when
+you need them.
 
-After collecting observations for a sweep, call `scripts/write_results.js`
-with a JSON payload on stdin:
+## Procedure
 
-```json
-{
-  "sweepDate": "2026-06-20",
-  "meta": {
-    "searchCount": 6,
-    "durationMin": 4,
-    "method": "chrome",
-    "notes": "...",
-    "errors": [],
-    "tokensBurned": 0,
-    "kind": "live-sweep",
-    "source": "gmail-receipts"
-  },
-  "searchParameters": {
-    "pickupDate": "2026-07-06",
-    "returnDate": "2026-07-13",
-    "location": "...",
-    "carClass": "economy",
-    "time": "10:00"
-  },
-  "observations": [
-    {
-      "company": "Enterprise",
-      "branch": "...",
-      "carClass": "economy",
-      "pickupDate": "2026-07-06",
-      "returnDate": "2026-07-13",
-      "days": 7,
-      "weeks": 1,
-      "totalUsd": 412.5,
-      "quote": null,
-      "notes": "...",
-      "source": "receipt-actual"
-    }
-  ]
-}
-```
+1. **Plan (in code).** Run the planner with the target reservation date and a token
+   budget (fluid scalar; higher = wider net, more cost):
 
-```bash
-node scripts/write_results.js < payload.json
-```
+   ```bash
+   node scripts/plan-sweep.js <reservationDate YYYY-MM-DD> [tokenBudget] [rentalLengthDays]
+   ```
 
-This writes one file to `data/sweeps/sweep-<sweepDate>-<suffix>.json`
-(gitignored — sweep output is data, not code, and never committed).
+   It returns the batch plan: companies in priority order (cheapest first), the
+   in-range branches per company, the fanned pickup dates (each with
+   `returnDate = pickup + rentalLengthDays`, default 7), search defaults
+   (`carClass: economy`, `time: 10:00`), and a `staleTiers` list.
 
-### Conventions to preserve
+2. **Re-verify stale tiers.** For any brand in `staleTiers`, do a quick search to
+   confirm its current lowest-tier label before selecting (its
+   `config/car-tiers.json` entry is >365 days old). Update that file if it changed.
 
-- **One file per sweep run, never per target date.** If a single run
-  checks several pickup dates and/or companies, all of those go in one
-  `observations` array in one file. Do not write a separate file per
-  target date searched.
-- **Never append or edit existing sweep files.** Each run writes a brand
-  new file; the random suffix in the filename exists only to avoid
-  collisions when a sweep is run more than once on the same day.
-- **Field names match the historical `rental-radar-sweep` format** (see
-  `docs/planning/archived-sweeps.md` on `develop`) — don't introduce new
-  field names for the same concepts:
-  - `totalUsd`, not `price` + `currency` (everything is USD by
-    convention; the field name carries the currency).
-  - `quote` is a separate, optional field for a non-final/estimated price
-    alongside `totalUsd`.
-  - `branch`, not `location`, for the observation's specific
-    company location.
-  - `carClass`, not `vehicleClass`.
-  - `source` can appear at both `meta` (overall sweep provenance) and
-    per-observation level, with values like `receipt-actual`,
-    `receipt-estimated`, `contract-current`, `user-observed`.
-  - `meta.kind` distinguishes a live sweep from a `history-backfill`.
+3. **Collect (browser).** For each company → branch → target in the plan, drive the
+   browser per `references/browser-control.md`, selecting the lowest tier by the
+   per-brand label and capturing the **all-in total** (not per-day×days). Handle
+   each brand's quirks per `references/brand-catalog.md`. Isolate failures per
+   brand: on error, record `totalUsd: null` with a reason and continue.
+
+4. **Record (one file).** Accumulate every observation in memory, then write the
+   whole run once:
+
+   ```bash
+   node scripts/write-results.js < payload.json
+   ```
+
+   This writes one gitignored file to `data/sweeps/sweep-<sweepDate>-<suffix>.json`.
+   Output is data, not code — never committed. See `references/schema.md` for the
+   exact payload shape and field conventions.
+
+## References
+
+- `references/browser-control.md` — Playwright-MCP-first (vision fallback), token
+  levers, observe-point batching, per-brand error isolation.
+- `references/brand-catalog.md` — per-brand location entry, lowest-tier label,
+  price-display quirks, friction, and cost-based priority.
+- `references/schema.md` — output record shape and field conventions.
+
+## Config
+
+- `config/companies.json` — brands, reservation URLs, priority order, token-budget gate.
+- `config/branches.json` — nearby branches (seed; real values from the setup node).
+- `config/car-tiers.json` — per-brand lowest-tier label + staleness date.
+
+## Baked-in assumptions (immutable by design)
+
+National US brands; lowest tier only; pickup time fixed at 10:00; rental length
+defaults to 7 days (overridable input, but only the default is used elsewhere); each
+nearby branch is its own competitor. Branch reach is bounded by the gas-breakeven
+distance, and search granularity by the token budget. The broader pipeline (one-time
+setup, yearly research refresh) is sketched in `docs/planning/pipeline.md`.
