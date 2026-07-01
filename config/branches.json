@@ -1,0 +1,19 @@
+{
+  "_comment": "SEED / EXAMPLE DATA. The real list is produced once by the setup node (see docs/planning/pipeline.md), which snapshots branches near the user's home ZIP within the gas-breakeven distance. `distanceMiles` is road distance from home; the planner sorts by it and filters by the gas-breakeven cap. One entry per (brand, physical branch). Replace with a real snapshot before live use.",
+  "homeZip": "02062",
+  "homeLabel": "Norwood, MA",
+  "branches": [
+    { "brand": "Budget", "branchId": "QN2", "name": "Norwood Airport", "zip": "02062", "distanceMiles": 2.1 },
+    { "brand": "Budget", "branchId": "BOS-DT", "name": "Boston Downtown", "zip": "02116", "distanceMiles": 17.4 },
+    { "brand": "Enterprise", "branchId": "NWS", "name": "Norwood South", "zip": "02062", "distanceMiles": 1.8 },
+    { "brand": "Enterprise", "branchId": "FOX", "name": "Foxborough", "zip": "02035", "distanceMiles": 9.6 },
+    { "brand": "Enterprise", "branchId": "DED", "name": "Dedham", "zip": "02026", "distanceMiles": 6.2 },
+    { "brand": "Alamo", "branchId": "BOS", "name": "Boston Logan Airport", "zip": "02128", "distanceMiles": 22.0 },
+    { "brand": "National", "branchId": "BOS", "name": "Boston Logan Airport", "zip": "02128", "distanceMiles": 22.0 },
+    { "brand": "Avis", "branchId": "OWD", "name": "Norwood Airport", "zip": "02062", "distanceMiles": 2.1 },
+    { "brand": "Avis", "branchId": "DED", "name": "Dedham", "zip": "02026", "distanceMiles": 6.2 },
+    { "brand": "Hertz", "branchId": "FXB", "name": "Foxborough - Washington St", "zip": "02035", "distanceMiles": 9.4 },
+    { "brand": "Dollar", "branchId": "BOS", "name": "Boston Logan Airport", "zip": "02128", "distanceMiles": 22.0 },
+    { "brand": "Thrifty", "branchId": "BOS", "name": "Boston Logan Airport", "zip": "02128", "distanceMiles": 22.0 }
+  ]
+}
