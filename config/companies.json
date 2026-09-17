@@ -1,0 +1,89 @@
+{
+  "_comment": "Brand catalog for the atomic sweep. Each brand is its own browser flow and its own competitor; `parent` is informational only and is NOT used to collapse flows. `priority` orders the sweep (1 = checked first); lower-cost brands first per references/brand-catalog.md. `minTokenBudget` gates thin-coverage independents out of low-budget sweeps. Branch-level idiosyncrasies live in references/brand-catalog.md, not here.",
+  "brands": [
+    {
+      "brand": "Budget",
+      "parent": "Avis Budget Group",
+      "reservationUrl": "https://www.budget.com/en/home",
+      "priority": 1,
+      "minTokenBudget": 0
+    },
+    {
+      "brand": "Enterprise",
+      "parent": "Enterprise Holdings",
+      "reservationUrl": "https://www.enterprise.com/en/home.html",
+      "priority": 2,
+      "minTokenBudget": 0
+    },
+    {
+      "brand": "Alamo",
+      "parent": "Enterprise Holdings",
+      "reservationUrl": "https://www.alamo.com/en/home.html",
+      "priority": 3,
+      "minTokenBudget": 0
+    },
+    {
+      "brand": "National",
+      "parent": "Enterprise Holdings",
+      "reservationUrl": "https://www.nationalcar.com/en/home.html",
+      "priority": 4,
+      "minTokenBudget": 0
+    },
+    {
+      "brand": "Avis",
+      "parent": "Avis Budget Group",
+      "reservationUrl": "https://www.avis.com/en/home",
+      "priority": 5,
+      "minTokenBudget": 0
+    },
+    {
+      "brand": "Payless",
+      "parent": "Avis Budget Group",
+      "reservationUrl": "https://www.paylesscar.com/en/home",
+      "priority": 6,
+      "minTokenBudget": 0
+    },
+    {
+      "brand": "Dollar",
+      "parent": "Hertz Global",
+      "reservationUrl": "https://www.dollar.com/",
+      "priority": 7,
+      "minTokenBudget": 0
+    },
+    {
+      "brand": "Thrifty",
+      "parent": "Hertz Global",
+      "reservationUrl": "https://www.thrifty.com/",
+      "priority": 8,
+      "minTokenBudget": 0
+    },
+    {
+      "brand": "Hertz",
+      "parent": "Hertz Global",
+      "reservationUrl": "https://www.hertz.com/rentacar/reservation/",
+      "priority": 9,
+      "minTokenBudget": 0
+    },
+    {
+      "brand": "Ace",
+      "parent": "Independent",
+      "reservationUrl": "https://www.acerentacar.com/",
+      "priority": 10,
+      "minTokenBudget": 2.5
+    },
+    {
+      "brand": "Fox",
+      "parent": "Independent",
+      "reservationUrl": "https://www.foxrentacar.com/",
+      "priority": 11,
+      "minTokenBudget": 2.5
+    },
+    {
+      "brand": "Rent-a-Wreck",
+      "parent": "Independent",
+      "reservationUrl": "https://www.rentawreck.com/",
+      "priority": 12,
+      "minTokenBudget": 2.5
+    }
+  ]
+}

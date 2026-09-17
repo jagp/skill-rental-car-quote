@@ -1,0 +1,18 @@
+{
+  "_comment": "Per-brand lowest-tier label + ACRISS code. Labels are non-intuitive and differ by brand (Economy vs Compact). `lastVerified` (YYYY-MM-DD) drives the 365-day staleness check in plan-sweep.js: when stale (or refreshed via a manual trigger), the skill re-confirms the label with a quick search before sweeping. Maintained by the yearly research node (see docs/planning/pipeline.md). SEED VALUES.",
+  "stalenessDays": 365,
+  "tiers": {
+    "Budget": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" },
+    "Enterprise": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" },
+    "Alamo": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" },
+    "National": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" },
+    "Avis": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" },
+    "Payless": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" },
+    "Dollar": { "label": "Compact", "acriss": "CCAR", "lastVerified": "2025-01-15" },
+    "Thrifty": { "label": "Compact", "acriss": "CCAR", "lastVerified": "2025-01-15" },
+    "Hertz": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" },
+    "Ace": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" },
+    "Fox": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" },
+    "Rent-a-Wreck": { "label": "Economy", "acriss": "ECAR", "lastVerified": "2026-06-01" }
+  }
+}
